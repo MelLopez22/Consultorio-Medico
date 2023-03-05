@@ -1,18 +1,17 @@
-const {Router} = require('express');
-const router = Router()
+const express = require("express");
+const { check } = require("express-validator");
+const { crearUsuario, loginUsuario } = require("../controllers/auth");
+const router = express.Router();
+
+router.post("/", [check("name", "el nombre es obigatorio").not().isEmpty() ,
+check("mail", "el mail es obigatorio").not().isEmpty() ,
+check("password", "password debe tener mas de 5 caracteres").not().isEmpty().isLength({min:5})],
+
+crearUsuario);
+
+router.post("/login",  [
+check("mail", "el mail es obigatorio").not().isEmpty() ,
+check("password", "password debe tener mas de 5 caracteres").not().isEmpty().isLength({min:5})],loginUsuario);
 
 
-router.get("/", (req, res)=>{
-    res.send('Saludamos desde el servidor')
-    })
-    router.post("/", (req, res)=>{
-    res.send('Saludamos desde el post')
-    })
-    router.put("/", (req, res)=>{
-    res.send('Saludamos desde el put')
-    })
-    router.delete("/", (req, res)=>{
-    res.send('Saludamos desde el delete')
-    })
-
-    module.exports = router;
+module.exports = router;
